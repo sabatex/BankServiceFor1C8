@@ -1,4 +1,4 @@
-name: DeployToGitHubPages
+name: BankServiceFor1C8
 env:
   PUBLISH_DIR: bin/Release/netstandard2.1/publish/wwwroot
 
