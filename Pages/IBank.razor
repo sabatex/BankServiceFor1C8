@@ -2,10 +2,8 @@
 @using System.IO
 @using ntics.BankConverter
 @inject IJSRuntime JSRuntime
-<p>IBank</p>
-<input type="file" style="display:none" id="input-file" />
-<button onclick="document.getElementById('input-file').Click()">click</button>
-
+<label for="accountNumber">Розрахунковий рахунок:</label>
+<input @bind-value="accountNumber" id="accountNumber" title="Не обов'язково, допомагає відфільтрувати інші рахунки."/><br />
 <label for="uploadFiles">Виберіть файли</label>
 <InputFile id="uploadFiles" multiple OnChange="HandleSelection" />
 @if (resultFiles != null)
@@ -27,6 +25,7 @@
 
 @code
 {
+    string accountNumber = "";
 
     List<ResultConvert> resultFiles = new List<ResultConvert>();
 
@@ -38,7 +37,6 @@
 
     async Task HandleSelection(IFileListEntry[] files)
     {
-        string AccountNumber = "1";
         resultFiles.Clear();
         foreach (var f in files)
         {
@@ -48,7 +46,7 @@
             {
                 var conv = BankStreamConverter.CreateStreamConverter(EBankType.iBankUA, new DefaultLocalizer());
 
-                string r = await conv.ConvertTo1CFormat(f.Data, AccountNumber);
+                string r = await conv.ConvertTo1CFormat(f.Data, accountNumber);
                 result.FileName = "kb_to_1c" + f.Name + ".xml";
                 result.FileUrl = await JSRuntime.InvokeAsync<string>("getFileUrl", r);
 
