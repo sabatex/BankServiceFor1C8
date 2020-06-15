@@ -1,0 +1,65 @@
+﻿@page "/ibank"
+@using System.IO
+@using ntics.BankConverter
+@inject IJSRuntime JSRuntime
+<p>IBank</p>
+<input type="file" style="display:none" id="input-file" />
+<button onclick="document.getElementById('input-file').Click()">click</button>
+
+<label for="uploadFiles">Виберіть файли</label>
+<InputFile id="uploadFiles" multiple OnChange="HandleSelection" />
+@if (resultFiles != null)
+{
+    <div style="display:grid;grid-template-columns:auto auto">
+        @foreach (var file in resultFiles)
+        {
+            string color = file.IsLoading ? "gray" : "white";
+            <div>
+                @file.FileName
+            </div>
+            <div style="background-color: @color">
+                <a class="button_link" href="@file.FileUrl" download="@file.FileName" @onclick="@(e=>DownloadClick(file))">Завантажити </a>
+            </div>
+        }
+    </div>
+}
+
+
+@code
+{
+
+    List<ResultConvert> resultFiles = new List<ResultConvert>();
+
+    void DownloadClick(ResultConvert r)
+    {
+        r.IsLoading = true;
+    }
+
+
+    async Task HandleSelection(IFileListEntry[] files)
+    {
+        string AccountNumber = "1";
+        resultFiles.Clear();
+        foreach (var f in files)
+        {
+            var result = new ResultConvert();
+
+            try
+            {
+                var conv = BankStreamConverter.CreateStreamConverter(EBankType.iBankUA, new DefaultLocalizer());
+
+                string r = await conv.ConvertTo1CFormat(f.Data, AccountNumber);
+                result.FileName = "kb_to_1c" + f.Name + ".xml";
+                result.FileUrl = await JSRuntime.InvokeAsync<string>("getFileUrl", r);
+
+            }
+            catch (Exception e)
+            {
+                result.Error = e.Message;
+            }
+            resultFiles.Add(result);
+
+        }
+    }
+
+}
