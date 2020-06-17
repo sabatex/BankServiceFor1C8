@@ -1,13 +1,23 @@
 ﻿@using  System.Globalization
 @inject IJSRuntime JSRuntime
 @inject NavigationManager Nav
+<style>
+    .cultureSelector {
+        display: flex;
+    }
+    .cultureSelectorItems {
+        border-radius: 5px;
+    }
+    .cultureSelectorItemsOptions {
+        border-radius:5px;
+    }
+</style>
 
-
-    <div style="display:flex">
-        <div class="col-auto">
+    <div class="cultureSelector">
+        <div class="col-auto" style="padding-right:4px">
             <span class="oi oi-globe" aria-hidden="true"></span>
         </div>
-        <select @bind="Culture" style="border-radius:5px">
+        <select @bind="Culture" class="cultureSelectorItems">
             @foreach (var culture in supportedCultures)
             {
                 <option value="@culture">@culture.DisplayName</option>

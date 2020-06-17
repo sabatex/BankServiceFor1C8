@@ -1,13 +1,18 @@
-﻿@page "/ifobs"
+﻿@page "/otpbanksk"
 @using System.IO
 @using ntics.BankConverter
 @inject IJSRuntime JSRuntime
-<h1> iFobs Client bank</h1>
+
+<h1>OTP bank SK</h1>
 <label for="accountNumber">Розрахунковий рахунок:</label>
-<input @bind-value="accountNumber" id="accountNumber" title="Не обов'язково, допомагає відфільтрувати інші рахунки." />
+<input @bind-value="accountNumber" id="accountNumber" title="Обов'язково." placeholder="Банківський рахунок" onfocus="accountFocus" />
+@if (accountError)
+{
+    <div class="alert-info">Номер вашого рахунку є обовязковим тому-що він відсутній в банківській виписці !!!</div>
+}
 <br />
-<label for="uploadFiles">Виберіть файли</label>
-<InputFile id="uploadFiles" multiple OnChange="HandleSelection" />
+<label >Виберіть файли :</label>
+<InputFile id="uploadFiles" multiple OnChange="HandleSelection"  @onclick="inputClick"/>
 @if (resultFiles != null)
 {
     <div style="display:grid;grid-template-columns:auto auto">
@@ -27,9 +32,33 @@
 
 @code
 {
+    bool accountError = false;
+    string inputFileStyle = "pointer-events:none";
+
     string accountNumber = "";
 
     List<ResultConvert> resultFiles = new List<ResultConvert>();
+
+    void accountFocus()
+    {
+        accountError = false;
+    }
+
+    void inputClick()
+    {
+        if (accountNumber.Length < 24)
+        {
+            accountError = true;
+            inputFileStyle = "pointer-events:none";
+
+        }
+        else
+        {
+            accountError = false;
+            inputFileStyle = "";
+
+        }
+    }
 
     void DownloadClick(ResultConvert r)
     {
@@ -39,6 +68,12 @@
 
     async Task HandleSelection(IFileListEntry[] files)
     {
+        if (accountNumber.Length < 24)
+        {
+            accountError = true;
+            return;
+        }
+
         resultFiles.Clear();
         foreach (var f in files)
         {
@@ -46,7 +81,7 @@
 
             try
             {
-                var conv = BankStreamConverter.CreateStreamConverter(EBankType.iFobs, new DefaultLocalizer());
+                var conv = BankStreamConverter.CreateStreamConverter(EBankType.OtpBankSK, new DefaultLocalizer());
 
                 string r = await conv.ConvertTo1CFormat(f.Data, accountNumber);
                 result.FileName = "kb_to_1c" + f.Name + ".xml";
