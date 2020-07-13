@@ -20,6 +20,7 @@ namespace BankServiceFor1C8
             builder.RootComponents.Add<App>("app");
             builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             builder.Services.AddLocalization();
+           
             var host = builder.Build();
             var jsInterop = host.Services.GetRequiredService<IJSRuntime>();
             var result = await jsInterop.InvokeAsync<string>("blazorCulture.get");

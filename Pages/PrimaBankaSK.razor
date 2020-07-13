@@ -46,7 +46,7 @@
 
             try
             {
-                var conv = BankStreamConverter.CreateStreamConverter(EBankType.PrimaBankSK, new DefaultLocalizer());
+                var conv = BankStreamConverter.CreateStreamConverter(EBankType.PrimaBankSK);
 
                 string r = await conv.ConvertTo1CFormat(f.Data, accountNumber);
                 result.FileName = "kb_to_1c" + f.Name + ".xml";
