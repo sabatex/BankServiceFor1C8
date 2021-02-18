@@ -6,6 +6,8 @@ env:
 on:
   push:
     branches: [ master ]
+    paths:
+      - 'BankServiceFor1C8.csproj'
 
 jobs:
   build:
