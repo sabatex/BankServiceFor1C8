@@ -3,7 +3,6 @@
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
-    <GHPages>true</GHPages>
     <Version>2.0.0</Version>
   </PropertyGroup>
 
@@ -12,7 +11,6 @@
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="5.0.3" PrivateAssets="all" />
     <PackageReference Include="Microsoft.Extensions.Localization" Version="5.0.3" />
     <PackageReference Include="MudBlazor" Version="5.0.1" />
-    <PackageReference Include="PublishSPAforGitHubPages.Build" Version="1.2.0" />
     <PackageReference Include="sabatex.V1C8.BankHelper" Version="1.0.1" />
     <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
   </ItemGroup>
