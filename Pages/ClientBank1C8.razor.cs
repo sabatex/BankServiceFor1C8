@@ -12,6 +12,7 @@ namespace BankServiceFor1C8.Pages
 {
     public partial class ClientBank1C8
     {
+        ElementReference downloadFile;
         async Task HandleSelection(InputFileChangeEventArgs files)
         {
             resultFiles.Clear();
@@ -28,7 +29,9 @@ namespace BankServiceFor1C8.Pages
                         string r = _1CClientBankExchange.ConvertTo1CFormat(bankType, memStream, accountNumber);
                         result.FileName = "kb_to_1c" + f.Name + ".xml";
                         result.FileUrl = await JSRuntime.InvokeAsync<string>("getFileUrl", r);
+                        await JSRuntime.InvokeAsync<object>("downloadFileResult", result.FileUrl, result.FileName);
                         resultFiles.Add(result);
+                        
                     }
 
                 }

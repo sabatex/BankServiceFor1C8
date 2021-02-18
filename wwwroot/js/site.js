@@ -8,6 +8,16 @@ function getFileUrl(fileContent) {
     return window.URL.createObjectURL(data);
 }
 
+function downloadFileResult(fileUrl,fileName) {
+    let link = document.createElement("a");
+    link.download = fileName;
+    link.href = fileUrl;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
+
 // URL pointing to the Blob with the file contents
 var objUrl = null;
 // create the blob with file content, and attach the URL to the downloadlink;

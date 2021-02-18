@@ -15,7 +15,7 @@
             <MudSelectItem Value="EBankType.OtpBankSK" T="EBankType" />
         </MudSelect>
     </MudItem>
-    <MudItem>
+    <MudItem xs="12" sm="6" md="4">
         @switch (bankType)
         {
             case EBankType.iBankUA_TXT:
@@ -26,7 +26,7 @@
                 break;
         }
     </MudItem>
-    <MudItem>
+    <MudItem xs="12" sm="6" md="4">
         <label for="uploadFiles" style="
         box-shadow: 0 2px 7px #4caf50;
         display: inline-flex;
@@ -38,10 +38,11 @@
         cursor: pointer;
         align-items: center;
         padding:16px;
-        background-color: #4caf50;">Виберіть файли <MudIcon Icon="@Icons.Filled.CloudUpload" /></label>
+        background-color: #4caf50;"
+        @ref="downloadFile">Виберіть файли <MudIcon Icon="@Icons.Filled.CloudUpload" /></label>
         <InputFile id="uploadFiles" hidden multiple OnChange="HandleSelection" />
     </MudItem>
-    @if (resultFiles != null)
+    @if (false)
     {
         <div style="display:grid;grid-template-columns:auto auto">
             @foreach (var file in resultFiles)
