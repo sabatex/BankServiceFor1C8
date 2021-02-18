@@ -3,8 +3,8 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:52089",
-      "sslPort": 44379
+      "applicationUrl": "http://localhost:54878",
+      "sslPort": 44339
     }
   },
   "profiles": {
@@ -16,8 +16,9 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "Bank1CService": {
+    "BlazorApp1": {
       "commandName": "Project",
+      "dotnetRunMessages": "true",
       "launchBrowser": true,
       "inspectUri": "{wsProtocol}://{url.hostname}:{url.port}/_framework/debug/ws-proxy?browser={browserInspectUri}",
       "applicationUrl": "https://localhost:5001;http://localhost:5000",

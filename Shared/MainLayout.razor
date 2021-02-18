@@ -2,20 +2,32 @@
 @inject NavigationManager NavigationManager
 @inject Microsoft.Extensions.Localization.IStringLocalizer<MainLayout> Loc
 
+<MudThemeProvider />
+<MudLayout>
+    <MudAppBar Elevation="1">
+        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
+        <MudText Typo="Typo.h5" Class="ml-3">Application</MudText>
+        <MudAppBarSpacer />
+        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
+    </MudAppBar>  
+    <MudDrawer Elevation="2" @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" >
+        <MudNavMenu>
+            <MudNavLink Href="/">Home</MudNavLink>
+            <MudNavLink Href="/clientbank1c8">Клиєнт банк 1С8</MudNavLink>
+        </MudNavMenu>
+     </MudDrawer>
 
-
-<div class="sidebar">
-    <NavMenu />
-</div>
-
-<div class="main">
-    <div class="top-row px-4">
-        <a href="http://blazor.net" target="_blank" class="ml-md-auto">@Loc["About"]</a>
-        <CultureSelector />
-    </div>
-
-    <div class="content px-4">
+     <MudMainContent Class="content px-4">
         @Body
-    </div>
+     </MudMainContent>
+    
+</MudLayout>
 
- </div>
+@code {
+    bool _drawerOpen = true;
+
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+}

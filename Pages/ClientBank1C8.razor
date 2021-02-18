@@ -1,0 +1,91 @@
+﻿@page "/clientbank1c8"
+@using System.IO
+@using sabatex.V1C8.BankHelper
+@inject IJSRuntime JSRuntime
+
+<MudGrid>
+    <MudItem xs="12" sm="6" md="4">
+        <MudSelect T="EBankType" Label="Банківська клієнтська програма" Value="@bankType" ValueChanged="BankTypeChange">
+            <MudSelectItem Value="EBankType.iFobsUA_TXT" T="EBankType" />
+            <MudSelectItem Value="EBankType.iFobsUA_XML" T="EBankType" />
+            <MudSelectItem Value="EBankType.iBankUA_TXT" T="EBankType" />
+            <MudSelectItem Value="EBankType.PrivatUA" T="EBankType" />
+            <MudSelectItem Value="EBankType.PrimaBankSK" T="EBankType" />
+            <MudSelectItem Value="EBankType.OtpBankSK" T="EBankType" />
+        </MudSelect>
+    </MudItem>
+    <MudItem>
+        @switch (bankType)
+        {
+            case EBankType.iBankUA_TXT:
+            case EBankType.iFobsUA_TXT:
+            case EBankType.iFobsUA_XML:
+            case EBankType.PrivatUA:
+                <MudTextField @bind-Value="accountNumber" Label="Розрахунковий рахунок:" Placeholder="Не обов'язково, допомагає відфільтрувати інші рахунки." />
+                break;
+        }
+    </MudItem>
+    <MudItem>
+        <label for="uploadFiles" style="
+        box-shadow: 0 2px 7px #4caf50;
+        display: inline-flex;
+        width: 200px;
+        justify-content: space-around;
+        border-radius: 2em;
+        color: white;
+        border:2px solid;
+        cursor: pointer;
+        align-items: center;
+        padding:16px;
+        background-color: #4caf50;">Виберіть файли <MudIcon Icon="@Icons.Filled.CloudUpload" /></label>
+        <InputFile id="uploadFiles" hidden multiple OnChange="HandleSelection" />
+    </MudItem>
+    @if (resultFiles != null)
+    {
+        <div style="display:grid;grid-template-columns:auto auto">
+            @foreach (var file in resultFiles)
+            {
+                string color = file.IsLoading ? "gray" : "white";
+                <div>
+                    @file.FileName
+                </div>
+                <div style="background-color: @color">
+                    <a class="button_link" href="@file.FileUrl" download="@file.FileName" @onclick="@(e=>DownloadClick(file))">Завантажити </a>
+                </div>
+            }
+        </div>
+    }
+</MudGrid>
+    @if(!string.IsNullOrWhiteSpace(error))
+    {
+        <MudText>
+            @error
+        </MudText>
+    }
+
+
+ 
+
+@code
+{
+    private EBankType bankType = EBankType.iBankUA_TXT;
+
+    string accountNumber = "";
+    string error = "";
+
+    List<ResultConvert> resultFiles = new List<ResultConvert>();
+
+    void BankTypeChange(EBankType value)
+    {
+        bankType = value;
+    }
+
+
+    void DownloadClick(ResultConvert r)
+    {
+        r.IsLoading = true;
+    }
+
+
+
+}
