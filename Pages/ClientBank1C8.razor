@@ -2,17 +2,24 @@
 @page "/bankservicefor1c8/clientbank1c8"
 @using System.IO
 @using sabatex.V1C8.BankHelper
+@using sabatex.Extensions.ClassExtensions
+@using System.ComponentModel.DataAnnotations
+@using System.Reflection
+ 
 @inject IJSRuntime JSRuntime
 
 <MudGrid>
-    <MudItem xs="12" sm="6" md="4">
+    <MudItem xs="12" sm="8" md="6">
         <MudSelect T="EBankType" Label="Банківська клієнтська програма" Value="@bankType" ValueChanged="BankTypeChange">
-            <MudSelectItem Value="EBankType.iFobsUA_TXT" T="EBankType" />
-            <MudSelectItem Value="EBankType.iFobsUA_XML" T="EBankType" />
-            <MudSelectItem Value="EBankType.iBankUA_TXT" T="EBankType" />
-            <MudSelectItem Value="EBankType.PrivatUA" T="EBankType" />
-            <MudSelectItem Value="EBankType.PrimaBankSK" T="EBankType" />
-            <MudSelectItem Value="EBankType.OtpBankSK" T="EBankType" />
+            @foreach (EBankType eBankType in Enum.GetValues<EBankType>())
+            {
+                var text = eBankType.ToString();
+                var enumMember = eBankType.GetType().GetMember(text).FirstOrDefault();
+                var dispalayAttribute = enumMember?.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute;
+                text = dispalayAttribute == null ? text : dispalayAttribute.Name;
+                text = sabatex.V1C8.BankHelper.Localizer.Localize(text);
+                <MudSelectItem Value=eBankType T="EBankType">@text</MudSelectItem>
+            }
         </MudSelect>
     </MudItem>
     <MudItem xs="12" sm="6" md="4">
@@ -38,56 +45,13 @@
         cursor: pointer;
         align-items: center;
         padding:16px;
-        background-color: #4caf50;"
-        @ref="downloadFile">Виберіть файли <MudIcon Icon="@Icons.Filled.CloudUpload" /></label>
-        <InputFile id="uploadFiles" hidden multiple OnChange="HandleSelection" />
+        background-color: #4caf50;">Виберіть файли <MudIcon Icon="@Icons.Filled.CloudUpload" /></label>
+        <InputFile  id="uploadFiles" hidden multiple OnChange="HandleSelection" />
     </MudItem>
-    @if (false)
-    {
-        <div style="display:grid;grid-template-columns:auto auto">
-            @foreach (var file in resultFiles)
-            {
-                string color = file.IsLoading ? "gray" : "white";
-                <div>
-                    @file.FileName
-                </div>
-                <div style="background-color: @color">
-                    <a class="button_link" href="@file.FileUrl" download="@file.FileName" @onclick="@(e=>DownloadClick(file))">Завантажити </a>
-                </div>
-            }
-        </div>
-    }
 </MudGrid>
-    @if(!string.IsNullOrWhiteSpace(error))
-    {
-        <MudText>
-            @error
-        </MudText>
-    }
-
-
- 
-
-@code
+@if (!string.IsNullOrWhiteSpace(error))
 {
-    private EBankType bankType = EBankType.iBankUA_TXT;
-
-    string accountNumber = "";
-    string error = "";
-
-    List<ResultConvert> resultFiles = new List<ResultConvert>();
-
-    void BankTypeChange(EBankType value)
-    {
-        bankType = value;
-    }
-
-
-    void DownloadClick(ResultConvert r)
-    {
-        r.IsLoading = true;
-    }
-
-
-
+    <MudText>
+        @error
+    </MudText>
 }

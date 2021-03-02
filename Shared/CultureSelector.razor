@@ -1,50 +1,46 @@
 ﻿@using  System.Globalization
 @inject IJSRuntime JSRuntime
 @inject NavigationManager Nav
-<style>
-    .cultureSelector {
-        display: flex;
-    }
-    .cultureSelectorItems {
-        border-radius: 5px;
-    }
-    .cultureSelectorItemsOptions {
-        border-radius:5px;
-    }
-</style>
+@inject IStringLocalizer<MainLayout> Localizer
 
-    <div class="cultureSelector">
-        <div class="col-auto" style="padding-right:4px">
-            <span class="oi oi-globe" aria-hidden="true"></span>
-        </div>
-        <select @bind="Culture" class="cultureSelectorItems">
-            @foreach (var culture in supportedCultures)
-            {
-                <option value="@culture">@culture.DisplayName</option>
-            }
-        </select>
-    </div>
-
+<MudMenu Color="Color.Inherit" Label="@Localizer[culturePresents[currentCulture]]" Dense="true" OffsetY="true" Direction="Direction.Right"
+    EndIcon="@Icons.Filled.KeyboardArrowDown">
+    <MudMenuItem OnClick="@(()=>selectCulture("uk"))">Українська</MudMenuItem>
+    <MudMenuItem OnClick="@(()=> selectCulture("en"))">English</MudMenuItem>
+</MudMenu>
 @code
 {
-        CultureInfo[] supportedCultures = new[]
-        {
+    const string cultureSelector = "localCulture";
+    const string defaultCulture = "uk";
+    string currentCulture = "uk";
+
+    Dictionary<string,string> culturePresents = new Dictionary<string, string> { { "uk", "Українська" }, { "en", "English" } };
+
+    CultureInfo[] supportedCultures = new[]
+    {
         new CultureInfo("en-US"),
         new CultureInfo("uk-UA"),
     };
 
-        CultureInfo Culture
+    async Task selectCulture(string value)
+    {
+        if (value == currentCulture) return;
+        if (culturePresents.ContainsKey(value))
         {
-            get => CultureInfo.CurrentCulture;
-            set
-            {
-                if (CultureInfo.CurrentCulture != value)
-                {
-                    var js = (IJSInProcessRuntime)JSRuntime;
-                    js.InvokeVoid("blazorCulture.set", value.Name);
+            currentCulture = value;
+            await JSRuntime.InvokeVoidAsync("localStorage.setItem",cultureSelector,value);
 
-                    Nav.NavigateTo(Nav.Uri, forceLoad: true);
-                }
-            }
+            var culture = new CultureInfo(value);
+            CultureInfo.DefaultThreadCurrentCulture = culture;
+            CultureInfo.DefaultThreadCurrentUICulture = culture;
+            Nav.NavigateTo(Nav.Uri, forceLoad: true);
         }
     }
+    protected override async Task OnParametersSetAsync()
+    {
+        currentCulture = await JSRuntime.InvokeAsync<string>("localStorage.getItem", AppOptions.cultureSelector);
+
+        await base.OnParametersSetAsync();
+    }
+
+}

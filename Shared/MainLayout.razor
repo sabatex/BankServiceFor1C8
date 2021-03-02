@@ -1,19 +1,32 @@
 ﻿@inherits LayoutComponentBase
-@inject NavigationManager NavigationManager
-@inject Microsoft.Extensions.Localization.IStringLocalizer<MainLayout> Loc
 
-<MudThemeProvider />
+@inject NavigationManager NavigationManager
+@inject IStringLocalizer<MainLayout> Loc
+@inject Services.SabatexLocalizer sabatexLocalizer
+
+<MudThemeProvider Theme="_currentTheme"/> 
+<MudDialogProvider />
+<MudSnackbarProvider />
+
+
 <MudLayout>
-    <MudAppBar Elevation="1">
+    <MudAppBar Elevation="25">
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-        <MudText Typo="Typo.h5" Class="ml-3">Application</MudText>
-        <MudAppBarSpacer />
+        <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
+            <MudText Typo="Typo.h5" Class="mudblazor-appbar-brand-text">@Loc["1C helper"]</MudText>
+        </MudHidden>
+        <MudAppBarSpacer /> 
+        <CultureSelector/>
+        <MudTooltip Text=@Loc["Toggle light/dark theme"]>
+            <MudIconButton Icon="@Icons.Material.Filled.Brightness4" Color="Color.Inherit" OnClick="@((e) => SwithTheme())" />
+        </MudTooltip>
+
         <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
     </MudAppBar>  
-    <MudDrawer Elevation="2" @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" >
+    <MudDrawer Elevation="25" @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" >
         <MudNavMenu>
-            <MudNavLink Href="">Home</MudNavLink>
-            <MudNavLink Href="clientbank1c8">Клиєнт банк 1С8</MudNavLink>
+            <MudNavLink Href="">@Loc["Home"]</MudNavLink>
+            <MudNavLink Href="clientbank1c8">@Loc["Клиєнт банк 1С8"]</MudNavLink>
         </MudNavMenu>
      </MudDrawer>
 
@@ -22,12 +35,3 @@
      </MudMainContent>
     
 </MudLayout>
-
-@code {
-    bool _drawerOpen = true;
-
-    void DrawerToggle()
-    {
-        _drawerOpen = !_drawerOpen;
-    }
-}
