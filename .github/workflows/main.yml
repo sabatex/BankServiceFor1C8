@@ -17,18 +17,53 @@ jobs:
 
     - name: Publish app
       run: dotnet publish -c Release
+      
+    # changes the base-tag in index.html from '/' to 'BlazorGitHubPagesDemo' to match GitHub Pages repository subdirectory
+    - name: Change base-tag in index.html from / to BankServiceFor1C8
+      run: sed -i 's/<base href="\/" \/>/<base href="\/BankServiceFor1C8\/" \/>/g' ${{ env.PUBLISH_DIR }}/wwwroot/index.html
+    
+    # changes the base-tag in index.html from '/' to 'BlazorGitHubPagesDemo' to match GitHub Pages repository subdirectory
+    - name: Fix service-worker-assets.js hashes
+      working-directory: ${{ env.PUBLISH_DIR }}/wwwroot
+      run: |
+        jsFile=$(<service-worker-assets.js)
+        # remove JavaScript from contents so it can be interpreted as JSON
+        json=$(echo "$jsFile" | sed "s/self.assetsManifest = //g" | sed "s/;//g")
+        # grab the assets JSON array
+        assets=$(echo "$json" | jq '.assets[]' -c)
+        for asset in $assets
+        do
+          oldHash=$(echo "$asset" | jq '.hash')
+          #remove leading and trailing quotes
+          oldHash="${oldHash:1:-1}"
+          path=$(echo "$asset" | jq '.url')
+          #remove leading and trailing quotes
+          path="${path:1:-1}"
+          newHash="sha256-$(openssl dgst -sha256 -binary $path | openssl base64 -A)"
+          
+          if [ $oldHash != $newHash ]; then
+            # escape slashes for json
+            oldHash=$(echo "$oldHash" | sed 's;/;\\/;g')
+            newHash=$(echo "$newHash" | sed 's;/;\\/;g')
+            echo "Updating hash for $path from $oldHash to $newHash"
+            # escape slashes second time for sed
+            oldHash=$(echo "$oldHash" | sed 's;/;\\/;g')
+            jsFile=$(echo -n "$jsFile" | sed "s;$oldHash;$newHash;g")
+          fi
+        done
 
-    - name: Rewrite base href
-      uses: SteveSandersonMS/ghaction-rewrite-base-href@v1
-      with:
-        html_path: ${{ env.PUBLISH_DIR }}/index.html
-        base_href: /BankServiceFor1C8/
+        echo -n "$jsFile" > service-worker-assets.js
+    # copy index.html to 404.html to serve the same file when a file is not found
+    - name: copy index.html to 404.html
+      run: cp wwwroot/index.html wwwroot/404.html
+    # add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project. (Allow files and folders starting with an underscore)
+    - name: Add .nojekyll file
+      run: touch wwwroot/.nojekyll
 
-    - name: GitHub Pages
-      if: success()
-      uses: crazy-max/ghaction-github-pages@v1.5.1
+    - name: Commit wwwroot to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@3.7.1
       with:
-        target_branch: gh-pages
-        build_dir: ${{ env.PUBLISH_DIR }}
-      env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        BRANCH: gh-pages
+        FOLDER: wwwroot
+ 
