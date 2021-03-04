@@ -1,7 +1,7 @@
 {
   "name": "BankServiceFor1C8",
   "short_name": "BankServiceFor1C8",
-  "start_url": "./BankServiceFor1C8",
+  "start_url": "https://sabatex.github.io/BankServiceFor1C8",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#03173d",
