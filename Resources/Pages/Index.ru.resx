@@ -117,7 +117,14 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
-    <value>Про нас</value>
+  <data name="Дана програма призначена для перетворення виписок клієнтбанків (iFobs, iBank 2 UA, ПриватБанк) України&#xD;&#xA;    в формат придатний для завантаження програмами 1с8.х" xml:space="preserve">
+    <value>Дана програма призначена для перетворення виписок клієнтбанків (iFobs, iBank 2 UA, ПриватБанк) України
+    в формат придатний для завантаження програмами 1с8.х</value>
+  </data>
+  <data name="Обробка банківських виписок" xml:space="preserve">
+    <value>Обработка банковских выписок</value>
+  </data>
+  <data name="Протестовано для конфігурацій Бухгалтерія Для України 2, Управління нашою фірмою 1.6" xml:space="preserve">
+    <value>Протестовано для конфігурацій Бухгалтерія Для України 2, Управління нашою фірмою 1.6</value>
   </data>
 </root>

@@ -117,7 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
-    <value>About</value>
+  <data name="1C сервіс" xml:space="preserve">
+    <value>1C сервис</value>
+  </data>
+  <data name="Клиєнт банк 1С8" xml:space="preserve">
+    <value>Клиент банк 1С8</value>
+  </data>
+  <data name="На початок" xml:space="preserve">
+    <value>На начало</value>
+  </data>
+  <data name="Переключити тему світла/темна" xml:space="preserve">
+    <value>Переключить тему светлая/тёмная</value>
   </data>
 </root>

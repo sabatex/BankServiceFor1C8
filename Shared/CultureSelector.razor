@@ -1,45 +1,36 @@
 ﻿@using  System.Globalization
+@using Services
 @inject IJSRuntime JSRuntime
 @inject NavigationManager Nav
 @inject IStringLocalizer<MainLayout> Localizer
+@inject SabatexLocalizer SL 
 
-<MudMenu Color="Color.Inherit" Label="@Localizer[culturePresents[currentCulture]]" Dense="true" OffsetY="true" Direction="Direction.Right"
-    EndIcon="@Icons.Filled.KeyboardArrowDown">
-    <MudMenuItem OnClick="@(()=>selectCulture("uk"))">Українська</MudMenuItem>
-    <MudMenuItem OnClick="@(()=> selectCulture("en"))">English</MudMenuItem>
+<MudMenu StartIcon="@Icons.Rounded.Language"
+         Color="Color.Inherit"
+         Label="@culturePresent"
+         Dense="true" OffsetY="true" Direction="Direction.Right"
+         EndIcon="@Icons.Filled.KeyboardArrowDown"
+         Class="sabatex-button">
+    @foreach (var c in SL)
+    {
+        <MudMenuItem OnClick="@(()=>selectCulture(c.Key))">@c.Value</MudMenuItem>
+    }
 </MudMenu>
 @code
 {
-    const string cultureSelector = "localCulture";
-    const string defaultCulture = "uk";
-    string currentCulture = "uk";
-
-    Dictionary<string,string> culturePresents = new Dictionary<string, string> { { "uk", "Українська" }, { "en", "English" } };
-
-    CultureInfo[] supportedCultures = new[]
-    {
-        new CultureInfo("en-US"),
-        new CultureInfo("uk-UA"),
-    };
+    string culturePresent;
 
     async Task selectCulture(string value)
     {
-        if (value == currentCulture) return;
-        if (culturePresents.ContainsKey(value))
-        {
-            currentCulture = value;
-            await JSRuntime.InvokeVoidAsync("localStorage.setItem",cultureSelector,value);
-
-            var culture = new CultureInfo(value);
-            CultureInfo.DefaultThreadCurrentCulture = culture;
-            CultureInfo.DefaultThreadCurrentUICulture = culture;
-            Nav.NavigateTo(Nav.Uri, forceLoad: true);
-        }
+        if (value == await SL.GetStoredCulture()) return;
+        await SL.SetStoredCulture(value);
+        Nav.NavigateTo(Nav.Uri, forceLoad: true);
     }
+    
+    
     protected override async Task OnParametersSetAsync()
     {
-        currentCulture = await JSRuntime.InvokeAsync<string>("localStorage.getItem", AppOptions.cultureSelector);
-
+        culturePresent = SL.GetCulturePresent(await SL.GetStoredCulture());
         await base.OnParametersSetAsync();
     }
 

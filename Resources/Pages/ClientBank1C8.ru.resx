@@ -117,7 +117,34 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="About" xml:space="preserve">
-    <value>About</value>
+  <data name="iBank формат файла ТХТ (csv)" xml:space="preserve">
+    <value>iBank формат файла ТХТ (csv)</value>
+  </data>
+  <data name="iFobs формат файла XML (ZIP)" xml:space="preserve">
+    <value>iFobs формат файла XML (ZIP)</value>
+  </data>
+  <data name="OTP Bank Словатчина формат  файла CSV" xml:space="preserve">
+    <value>OTP Bank Словакии формат  файла CSV</value>
+  </data>
+  <data name="PrimaBanka Словатчина формат  файла CSV" xml:space="preserve">
+    <value>PrimaBanka Словакии формат  файла CSV</value>
+  </data>
+  <data name="Банківська клієнтська програма" xml:space="preserve">
+    <value>Программа клиент-банк</value>
+  </data>
+  <data name="Виберіть файли" xml:space="preserve">
+    <value>Выберите файлы</value>
+  </data>
+  <data name="Не обов'язково, допомагає відфільтрувати інші рахунки." xml:space="preserve">
+    <value>Не обязательно, делает фильтр по счёту</value>
+  </data>
+  <data name="Обробка банківських виписок" xml:space="preserve">
+    <value>Обработка банковских выписок</value>
+  </data>
+  <data name="ПриватБанк формат файла ТХТ (csv)" xml:space="preserve">
+    <value>ПриватБанк формат файла ТХТ (csv)</value>
+  </data>
+  <data name="Розрахунковий рахунок:" xml:space="preserve">
+    <value>Расчётный счёт:</value>
   </data>
 </root>

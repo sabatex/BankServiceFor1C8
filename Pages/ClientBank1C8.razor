@@ -5,13 +5,20 @@
 @using sabatex.Extensions.ClassExtensions
 @using System.ComponentModel.DataAnnotations
 @using System.Reflection
- 
-@inject IJSRuntime JSRuntime
 
+@inject IJSRuntime JSRuntime
+@inject IStringLocalizer<ClientBank1C8> Localizer
+<h2>@Localizer["Обробка банківських виписок"]</h2>
 <MudGrid>
     <MudItem xs="12" sm="8" md="6">
-        <MudSelect T="EBankType" Label="Банківська клієнтська програма" Value="@bankType" ValueChanged="BankTypeChange">
-            @foreach (EBankType eBankType in Enum.GetValues<EBankType>())
+        <MudSelect T="EBankType" Label="@Localizer["Банківська клієнтська програма"]" Value="@bankType" ValueChanged="BankTypeChange">
+            @foreach (var eBank in stringBankPresents)
+            {
+                <MudSelectItem Value=eBank.Key T="EBankType">@Localizer[eBank.Value]</MudSelectItem>
+            }
+
+
+            @*@foreach (EBankType eBankType in Enum.GetValues<EBankType>())
             {
                 var text = eBankType.ToString();
                 var enumMember = eBankType.GetType().GetMember(text).FirstOrDefault();
@@ -19,17 +26,17 @@
                 text = dispalayAttribute == null ? text : dispalayAttribute.Name;
                 text = sabatex.V1C8.BankHelper.Localizer.Localize(text);
                 <MudSelectItem Value=eBankType T="EBankType">@text</MudSelectItem>
-            }
+            }*@
         </MudSelect>
     </MudItem>
-    <MudItem xs="12" sm="6" md="4">
+    <MudItem xs="12" sm="8" md="6">
         @switch (bankType)
         {
             case EBankType.iBankUA_TXT:
             case EBankType.iFobsUA_TXT:
             case EBankType.iFobsUA_XML:
             case EBankType.PrivatUA:
-                <MudTextField @bind-Value="accountNumber" Label="Розрахунковий рахунок:" Placeholder="Не обов'язково, допомагає відфільтрувати інші рахунки." />
+                <MudTextField @bind-Value="accountNumber" Label="@Localizer["Розрахунковий рахунок:"]" Placeholder="@Localizer["Не обов'язково, допомагає відфільтрувати інші рахунки."]" />
                 break;
         }
     </MudItem>
@@ -45,13 +52,36 @@
         cursor: pointer;
         align-items: center;
         padding:16px;
-        background-color: #4caf50;">Виберіть файли <MudIcon Icon="@Icons.Filled.CloudUpload" /></label>
-        <InputFile  id="uploadFiles" hidden multiple OnChange="HandleSelection" />
+        background-color: #4caf50;">@Localizer["Виберіть файли"]<MudIcon Icon="@Icons.Filled.CloudUpload" /></label>
+        <InputFile id="uploadFiles" hidden multiple OnChange="HandleSelection" />
     </MudItem>
 </MudGrid>
-@if (!string.IsNullOrWhiteSpace(error))
-{
-    <MudText>
-        @error
-    </MudText>
-}
+
+
+@if (makeFiles.Count() != 0)
+ {
+    <MudText>Оброблено файли:</MudText>
+    <MudSimpleTable>
+        <thead>
+            <tr>
+                <th>Вхідний файл</th>
+                <th>Вихідний файл</th>
+                <th>Результат обробки</th>
+            </tr>
+        </thead> 
+        <tbody>
+            @foreach (var item in makeFiles)
+            {
+                <tr>
+                    <td>@item.InputFile</td>
+                    <td>@item.OutPutFile</td>
+                    <td>@item.Result</td>
+                </tr>
+            }
+        </tbody>
+    </MudSimpleTable>
+
+    <MudAlert>Файли знаходяться в папці Завантаження</MudAlert>
+ }
+
+

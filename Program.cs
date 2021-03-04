@@ -22,28 +22,13 @@ namespace BankServiceFor1C8
             builder.RootComponents.Add<App>("#app");
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
             builder.Services.AddMudServices();
-            builder.Services.AddSingleton<SabatexLocalizer>();
             builder.Services.AddLocalization(options=> {
                 options.ResourcesPath = "Resources";
             });
+            builder.Services.AddScoped<SabatexLocalizer>();
             var host = builder.Build();
-            var js = host.Services.GetRequiredService<IJSRuntime>();
-            var localCulture = await js.InvokeAsync<string>("localStorage.getItem", AppOptions.cultureSelector);
-            if (string.IsNullOrWhiteSpace(localCulture))
-            {
-                await AppOptions.SetCulture(js, "uk");
-            }
-            else
-            {
-                if (!AppOptions.culturePresents.ContainsKey(localCulture))
-                {
-                    await AppOptions.SetCulture(js, "uk");
-                }
-                else
-                {
-                    await AppOptions.SetCulture(js, localCulture, false);
-                }
-            }
+            var localizer = host.Services.GetRequiredService<SabatexLocalizer>();
+            await localizer.InitialStoredCulture();
             await host.RunAsync();
        }
     }

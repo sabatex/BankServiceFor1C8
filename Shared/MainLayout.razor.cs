@@ -1,5 +1,4 @@
-﻿using BankServiceFor1C8.Services;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using MudBlazor;
 using System;
@@ -22,21 +21,6 @@ namespace BankServiceFor1C8.Shared
         protected override void OnInitialized()
         {
             _currentTheme=_defaultTheme;
-        }
-
-        protected override async Task OnParametersSetAsync()
-        {
-            // var currentCulture = await LocalStore.GetLocalValue(cultureSelector);
-            // if (string.IsNullOrWhiteSpace(currentCulture) || !culturePresents.ContainsKey(currentCulture))
-            // {
-            //     currentCulture = defaultCulture;
-            //     await LocalStore.SetLocalValue(cultureSelector, currentCulture);
-            // }
-            //setLocalCulture(currentCulture);
-
-            //cs = await sabatexLocalizer.GetCulture();
-
-            await base.OnParametersSetAsync();
         }
 
         #region Theme

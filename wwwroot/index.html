@@ -11,9 +11,14 @@
     <link href="BankServiceFor1C8.styles.css" rel="stylesheet" />
     <link href="manifest.json" rel="manifest" />
     <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png" />
-
     <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
     <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
+    <style>
+        .sabatex-button>.mud-button-text>.mud-button-label{
+            text-transform:none;
+        }
+    </style>
+
 
     <!-- Start Single Page Apps for GitHub Pages -->
     <script type="text/javascript">
@@ -28,22 +33,22 @@
         // When the single page app is loaded further down in this file,
         // the correct url will be waiting in the browser's history for
         // the single page app to route accordingly.
-        //(function (l) {
-        //    if (l.search) {
-        //        var q = {};
-        //        l.search.slice(1).split('&').forEach(function (v) {
-        //            var a = v.split('=');
-        //            q[a[0]] = a.slice(1).join('=').replace(/~and~/g, '&');
-        //        });
-        //        if (q.p !== undefined) {
-        //            window.history.replaceState(null, null,
-        //                l.pathname.slice(0, -1) + (q.p || '') +
-        //                (q.q ? ('?' + q.q) : '') +
-        //                l.hash
-        //            );
-        //        }
-        //    }
-        //}(window.location))
+        (function (l) {
+            if (l.search) {
+                var q = {};
+                l.search.slice(1).split('&').forEach(function (v) {
+                    var a = v.split('=');
+                    q[a[0]] = a.slice(1).join('=').replace(/~and~/g, '&');
+                });
+                if (q.p !== undefined) {
+                    window.history.replaceState(null, null,
+                        l.pathname.slice(0, -1) + (q.p || '') +
+                        (q.q ? ('?' + q.q) : '') +
+                        l.hash
+                    );
+                }
+            }
+        }(window.location))
     </script>
     <!-- End Single Page Apps for GitHub Pages -->
 </head>
@@ -81,9 +86,34 @@
     </script>
     <script>navigator.serviceWorker.register('service-worker.js');</script>
     <script src="_content/MudBlazor/MudBlazor.min.js"></script>
-    <script src="site.js"></script>
     <script src="decode.js"></script>
+    <script>
+        //sabatex object
+        var sabatex = {
+            getFileUrl: function (fileContent) {
+                var data = new Blob([fileContent], { type: 'text/plain' });
+                return window.URL.createObjectURL(data);
+            },
+            downloadFileResult: function (fileUrl, fileName) {
+                let link = document.createElement("a");
+                link.download = fileName;
+                link.href = fileUrl;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            },
+            downloadFile: function (fileName, fileContent) {
+                let link = document.createElement("a");
+                link.download = fileName;
+                var data = new Blob([fileContent], { type: 'text/plain' });
+                link.href = window.URL.createObjectURL(data);
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
 
+        };
+    </script>
 
 </body>
 
