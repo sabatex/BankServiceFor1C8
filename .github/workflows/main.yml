@@ -20,11 +20,11 @@ jobs:
       
     # changes the base-tag in index.html from '/' to 'BlazorGitHubPagesDemo' to match GitHub Pages repository subdirectory
     - name: Change base-tag in index.html from / to BankServiceFor1C8
-      run: sed -i 's/<base href="\/" \/>/<base href="\/BankServiceFor1C8\/" \/>/g' ${{ env.PUBLISH_DIR }}/wwwroot/index.html
+      run: sed -i 's/<base href="\/" \/>/<base href="\/BankServiceFor1C8\/" \/>/g' ${{ env.PUBLISH_DIR }}/index.html
     
     # changes the base-tag in index.html from '/' to 'BlazorGitHubPagesDemo' to match GitHub Pages repository subdirectory
     - name: Fix service-worker-assets.js hashes
-      working-directory: ${{ env.PUBLISH_DIR }}/wwwroot
+      working-directory: ${{ env.PUBLISH_DIR }}
       run: |
         jsFile=$(<service-worker-assets.js)
         # remove JavaScript from contents so it can be interpreted as JSON
@@ -55,15 +55,13 @@ jobs:
         echo -n "$jsFile" > service-worker-assets.js
     # copy index.html to 404.html to serve the same file when a file is not found
     - name: copy index.html to 404.html
-      run: cp wwwroot/index.html wwwroot/404.html
+      run: cp index.html 404.html
     # add .nojekyll file to tell GitHub pages to not treat this as a Jekyll project. (Allow files and folders starting with an underscore)
     - name: Add .nojekyll file
-      run: touch wwwroot/.nojekyll
+      run: touch .nojekyll
 
     - name: Commit wwwroot to GitHub Pages
       uses: JamesIves/github-pages-deploy-action@3.7.1
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        BRANCH: gh-pages
-        FOLDER: wwwroot
- 
+        BRANCH: gh-pages 
