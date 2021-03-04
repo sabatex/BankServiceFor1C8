@@ -19,7 +19,7 @@ jobs:
       
     # changes the base-tag in index.html from '/' to 'BlazorGitHubPagesDemo' to match GitHub Pages repository subdirectory
     - name: Change base-tag in index.html from / to BankServiceFor1C8
-      run: sed -i 's/<base href="\/" \/>/<base href="\/BankServiceFor1C8\/" \/>/g' ./wwwwroot/index.html
+      run: sed -i 's/<base href="\/" \/>/<base href="\/BankServiceFor1C8\/" \/>/g' wwwroot/index.html
 
     - name: Publish app
       run: dotnet publish -c Release
