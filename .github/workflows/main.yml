@@ -65,4 +65,4 @@ jobs:
       with:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         BRANCH: gh-pages
-        FOLDER: .
+        FOLDER: ${{ env.PUBLISH_DIR }}
