@@ -25,6 +25,7 @@ namespace BankServiceFor1C8.Pages
         {
             {EBankType.iFobsUA_XML, "iFobs формат файла XML (ZIP)"},
             {EBankType.iFobsUA_TXT, "iFobs формат файла TXT (DAT)" },
+            {EBankType.iFobs,"iFobs формат вивантаження XML/TXT (XML,DAT,ZIP)" },
             {EBankType.iBankUA_TXT, "iBank формат файла ТХТ (csv)"},
             {EBankType.PrivatUA,"ПриватБанк формат файла ТХТ (csv)"},
             {EBankType.OtpBankSK,"OTP Bank Словатчина формат  файла CSV"},
@@ -50,19 +51,38 @@ namespace BankServiceFor1C8.Pages
                     OutPutFile = f.Name + ".xml",
                     Result = "Ok"
                 };
-                try
+
+                if (bankType != EBankType.iFobs)
                 {
-                    using (MemoryStream memStream = new MemoryStream(512000))
+                    try
                     {
-                        await f.OpenReadStream().CopyToAsync(memStream);
-                        string r = _1CClientBankExchange.ConvertTo1CFormat(bankType, memStream, accountNumber);
-                        string fileName = "kb_to_1c" + f.Name + ".xml";
-                        await JSRuntime.InvokeAsync<object>("sabatex.downloadFile", fileName,r);
+                        using (MemoryStream memStream = new MemoryStream(512000))
+                        {
+                            await f.OpenReadStream().CopyToAsync(memStream);
+                            string r = _1CClientBankExchange.ConvertTo1CFormat(bankType, memStream, accountNumber);
+                            await JSRuntime.InvokeAsync<object>("sabatex.downloadFile", resultTask.OutPutFile, r);
+                        }
                     }
+                    catch (Exception e)
+                    {
+                        resultTask.Result = e.Message;
+                    }
+
                 }
-                catch (Exception e)
+                else
                 {
-                    resultTask.Result = e.Message;
+                    try { 
+                        var result = (new _1CClientBankExchange()) as IiFobs;
+                        await result.ImportFromFileAsync(f.OpenReadStream(), Path.GetExtension(f.Name));
+                        if (result.Count() > 0)
+                            await JSRuntime.InvokeAsync<object>("sabatex.downloadFile", resultTask.OutPutFile, result.GetAsXML());
+                        else
+                            resultTask.Result = "Пропущений";
+                    }
+                    catch (Exception e)
+                    {
+                        resultTask.Result = e.Message;
+                    }
                 }
                 makeFiles.Add(resultTask);
             }

@@ -11,7 +11,6 @@
 
 <MudLayout>
     <MudAppBar Elevation="25">
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
         <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
             <MudText  Typo="Typo.h5" Class="mudblazor-appbar-brand-text">@Loc["1C сервіс"]</MudText>
         </MudHidden>
@@ -20,17 +19,10 @@
         <MudTooltip Text=@Loc["Переключити тему світла/темна"]>
             <MudIconButton Icon="@Icons.Material.Filled.Brightness4" Color="Color.Inherit" OnClick="@((e) => SwithTheme())" />
         </MudTooltip>
-
-        <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
+        <MudTooltip Text="Початковий код">
+            <MudIconButton Icon="@Icons.Custom.Brands.GitHub"  Color="Color.Inherit" Link="https://github.com/sabatex/BankServiceFor1C8"/>  
+        </MudTooltip>
     </MudAppBar>  
-    <MudDrawer Elevation="25" @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" >
-        <MudDrawerHeader Class="mudblazor-brand" LinkToIndex="true">
-            @Loc["На початок"]
-        </MudDrawerHeader>
-        <MudNavMenu>
-            <MudNavLink Href="clientbank1c8">@Loc["Клиєнт банк 1С8"]</MudNavLink>
-        </MudNavMenu>
-     </MudDrawer>
 
      <MudMainContent Class="content px-4">
         @Body

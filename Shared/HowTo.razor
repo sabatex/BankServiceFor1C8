@@ -1,9 +1,4 @@
-﻿@using System.Globalization
-
-
-@if (CultureInfo.CurrentCulture.Name == "uk")
-{
-    <p><b>Як це працює:</b></p>
+﻿   <p><b>Як це працює:</b></p>
     <ul>
         <li>Підготуйте файл виписки в системі клієнт-банк в форматі який підтримується системою.</li>
         <li>Введіть або виберіть банківський рахунок </li>
@@ -11,18 +6,3 @@
         <li>Натисніть "Конвертувати"</li>
         <li>Збережіть зконвертований файл в форматі .XML для наступного завантаження в програму 1С</li>
     </ul>
-}
-else
-{
-    <p><b> How to: </b></p>
-    <ul>
-        <li>Prepare an extract file in the client-bank system in the supported format</li>
-        <li>Download the bank statement file with the extension .CSV</li>
-        <li>Click "Convert"</li>
-        <li>Save the resulting .XML file for later download to the 1C program</li>
-    </ul>
-}
-
-@code {
-
-}
