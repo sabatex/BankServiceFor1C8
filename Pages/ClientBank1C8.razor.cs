@@ -23,8 +23,8 @@ namespace BankServiceFor1C8.Pages
         private EBankType bankType = EBankType.iBankUA_TXT;
         private static Dictionary<EBankType, string> stringBankPresents = new Dictionary<EBankType, string>
         {
-            {EBankType.iFobsUA_XML, "iFobs формат файла XML (ZIP)"},
-            {EBankType.iFobsUA_TXT, "iFobs формат файла TXT (DAT)" },
+            //{EBankType.iFobsUA_XML, "iFobs формат файла XML (ZIP)"},
+            //{EBankType.iFobsUA_TXT, "iFobs формат файла TXT (DAT)" },
             {EBankType.iFobs,"iFobs формат вивантаження XML/TXT (XML,DAT,ZIP)" },
             {EBankType.iBankUA_TXT, "iBank формат файла ТХТ (csv)"},
             {EBankType.PrivatUA,"ПриватБанк формат файла ТХТ (csv)"},
