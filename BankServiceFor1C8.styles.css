@@ -1,0 +1,36 @@
+/* /Shared/MainLayout.razor.rz.scp.css */
+.culture-select[b-4xocx10xvr] {
+    color: white
+}
+
+    .culture-select > .mud-input[b-4xocx10xvr] {
+        color: white;
+    }
+
+@media (max-width: 640.98px) {
+ 
+}
+
+@media (min-width: 641px) {
+    .page[b-4xocx10xvr] {
+        flex-direction: row;
+    }
+
+    .sidebar[b-4xocx10xvr] {
+        width: 250px;
+        height: 100vh;
+        position: sticky;
+        top: 0;
+    }
+
+    .top-row[b-4xocx10xvr] {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+
+    .main > div[b-4xocx10xvr] {
+        padding-left: 2rem !important;
+        padding-right: 1.5rem !important;
+    }
+}
