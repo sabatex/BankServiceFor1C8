@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
     <BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
-    <Version>6.0.0</Version>
+    <Version>6.0.1</Version>
     <UserSecretsId>a0ee92ff-d365-4c3f-ae66-44a9b12db8b1</UserSecretsId>
   </PropertyGroup>
   
@@ -14,7 +14,6 @@
     <PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.2" />
     <PackageReference Include="MudBlazor" Version="6.0.6" />
     <PackageReference Include="sabatex.Extensions" Version="6.0.0" />
-    <PackageReference Include="sabatex.V1C8.BankHelper" Version="6.0.1" />
     <PackageReference Include="System.Net.Http.Json" Version="6.0.0" />
   </ItemGroup>
 
