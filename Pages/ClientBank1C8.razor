@@ -2,38 +2,28 @@
 @page "/clientbank1c8"
 @page "/bankservicefor1c8/clientbank1c8"
 @using System.IO
+@using BankServiceFor1C8.Models
 @using sabatex.V1C8.BankHelper
 @using sabatex.Extensions.ClassExtensions
 @using System.ComponentModel.DataAnnotations
 @using System.Reflection
 
 @inject IJSRuntime JSRuntime
-@inject IStringLocalizer<ClientBank1C8> Localizer
-<h2>@Localizer["Обробка банківських виписок"]</h2>
+
+<h2>Обробка банківських виписок</h2>
 <p>
-    @Localizer["Дана програма призначена для перетворення виписок клієнтбанків (iFobs, iBank 2 UA, ПриватБанк) України в формат придатний для завантаження програмами 1с8.х"]
+    Дана програма призначена для перетворення виписок клієнтбанків (iFobs, iBank 2 UA, ПриватБанк) України в формат придатний для завантаження програмами 1с8.х
 </p>
 <p>
-    @Localizer["Протестовано для конфігурацій Бухгалтерія Для України 2, Управління нашою фірмою 1.6"]
+    Протестовано для конфігурацій Бухгалтерія Для України 2, Управління нашою фірмою 1.6
 </p>
 <MudGrid>
     <MudItem xs="12" sm="8" md="6">
-        <MudSelect T="EBankType" Label="@Localizer["Банківська клієнтська програма"]" Value="@bankType" ValueChanged="BankTypeChange">
+        <MudSelect T="EBankType" Label="Банківська клієнтська програма" Value="@bankType" ValueChanged="BankTypeChange">
             @foreach (var eBank in stringBankPresents)
             {
-                <MudSelectItem Value=eBank.Key T="EBankType">@Localizer[eBank.Value]</MudSelectItem>
+                <MudSelectItem Value=eBank.Key T="EBankType">@eBank.Value</MudSelectItem>
             }
-
-
-            @*@foreach (EBankType eBankType in Enum.GetValues<EBankType>())
-            {
-                var text = eBankType.ToString();
-                var enumMember = eBankType.GetType().GetMember(text).FirstOrDefault();
-                var dispalayAttribute = enumMember?.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute;
-                text = dispalayAttribute == null ? text : dispalayAttribute.Name;
-                text = sabatex.V1C8.BankHelper.Localizer.Localize(text);
-                <MudSelectItem Value=eBankType T="EBankType">@text</MudSelectItem>
-            }*@
         </MudSelect>
     </MudItem>
     <MudItem xs="12" sm="8" md="6">
@@ -43,7 +33,7 @@
             case EBankType.iFobsUA_TXT:
             case EBankType.iFobsUA_XML:
             case EBankType.PrivatUA:
-                <MudTextField @bind-Value="accountNumber" Label="@Localizer["Розрахунковий рахунок:"]" Placeholder="@Localizer["Не обов'язково, допомагає відфільтрувати інші рахунки."]" />
+                <MudTextField @bind-Value="accountNumber" Label="Розрахунковий рахунок:" Placeholder="Не обов'язково, допомагає відфільтрувати інші рахунки." />
                 break;
         }
     </MudItem>
@@ -59,7 +49,7 @@
         cursor: pointer;
         align-items: center;
         padding:16px;
-        background-color: #4caf50;">@Localizer["Виберіть файли"]<MudIcon Icon="@Icons.Filled.CloudUpload" /></label>
+        background-color: #4caf50;">Виберіть файли<MudIcon Icon="@Icons.Filled.CloudUpload" /></label>
         <InputFile id="uploadFiles" hidden multiple OnChange="HandleSelection" />
     </MudItem>
 </MudGrid>

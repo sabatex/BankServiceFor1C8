@@ -1,8 +1,7 @@
 ﻿@inherits LayoutComponentBase
 
 @inject NavigationManager NavigationManager
-@inject IStringLocalizer<MainLayout> Loc
-@inject Services.SabatexLocalizer sabatexLocalizer
+
 
 <MudThemeProvider Theme="_currentTheme"/> 
 <MudDialogProvider />
@@ -12,11 +11,10 @@
 <MudLayout>
     <MudAppBar Elevation="25">
         <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
-            <MudText  Typo="Typo.h5" Class="mudblazor-appbar-brand-text">@Loc["1C сервіс"]</MudText>
+            <MudText  Typo="Typo.h5" Class="mudblazor-appbar-brand-text">1C сервіс</MudText>
         </MudHidden>
         <MudSpacer /> 
-        <CultureSelector/>
-        <MudTooltip Text=@Loc["Переключити тему світла/темна"]>
+        <MudTooltip Text="Переключити тему світла/темна">
             <MudIconButton Icon="@Icons.Material.Filled.Brightness4" Color="Color.Inherit" OnClick="@((e) => SwithTheme())" />
         </MudTooltip>
         <MudTooltip Text="Початковий код">
