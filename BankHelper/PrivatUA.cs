@@ -159,11 +159,11 @@ public class PrivatUA : ClientBankTo1CFormatConversion
 
             return document;
     }
-    string GetLineFromStream(StreamReader stream, char[] buffer, ref int chars)
+    async Task<(string result, int chars)> GetLineFromStreamAsync(StreamReader stream, char[] buffer, int chars)
     {
-        int readChars = stream.Read(buffer, chars, BufferSize - chars);
+        int readChars = await stream.ReadAsync(buffer, chars, BufferSize - chars);
         if (readChars == 0 && chars == 0)
-            return string.Empty;
+            return (string.Empty,chars);
         int pos = 0;
         chars += readChars;
         var result = new StringBuilder();
@@ -178,45 +178,40 @@ public class PrivatUA : ClientBankTo1CFormatConversion
                 chars = chars - pos - delimiter.Length;
                 if (chars != 0)
                     Array.Copy(buffer, pos + delimiter.Length, buffer, 0, chars);
-                return result.ToString();
+                return (result.ToString(),chars);
             }
             result.Append(buffer[pos]);
             pos++;
         }
         chars = 0;
-        return result.ToString();
+        return (result.ToString(),chars);
     }
 
-    string ConvertTo1CFormat(Stream stream, string AccNumber)
+    public override async Task ImportFromFileAsync(Stream stream, string fileExt, string accNumber = "")
     {
         using (StreamReader reader = new StreamReader(stream, new Encoding1251()))
         {
             var lineDoc = 1;
-            var chars = 0;
             char[] buffer = new char[BufferSize];
+            (string result, int chars) lineStr = ("", 0);
             try
             {
                 do
                 {
-                    var lineStr = GetLineFromStream(reader, buffer, ref chars);
-                    if (chars == 0 || lineStr.Length == 0)
+                    lineStr = await GetLineFromStreamAsync(reader, buffer, lineStr.chars);
+                    if (lineStr.chars == 0 || lineStr.result.Length == 0)
                         continue;
-                    var doc = GetDocument(lineStr, AccNumber);
-                    if (doc != null) Documents.Add(doc);
+                    var doc = GetDocument(lineStr.result.TrimEnd(), accNumber);
+                    if (doc != null) this.Documents.Add(doc);
                     lineDoc++;
-                } while (chars != 0);
-                return GetAsXML();
+                } while (lineStr.chars != 0);
             }
             catch (Exception e)
             {
                 throw new Exception(ErrorStrings.InLine(lineDoc, e.Message));
             }
         }
-    }
 
-    public override async Task ImportFromFileAsync(Stream stream, string fileExt, string accNumber = "")
-    {
-        await Task.FromResult(ConvertTo1CFormat(stream, accNumber));
     }
 
 }
