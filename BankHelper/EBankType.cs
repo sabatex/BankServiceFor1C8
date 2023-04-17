@@ -13,7 +13,8 @@ namespace BankServiceFor1C8.BankHelper
         OtpBankSK,
         PrivatUA,
         UkrGazBank,
-        iFobs
+        iFobs,
+        Oschad
 
     }
 }

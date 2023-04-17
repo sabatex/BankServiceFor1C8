@@ -154,6 +154,8 @@ public abstract class ClientBankTo1CFormatConversion
                 return new PrimaBankSk();
             case EBankType.UkrGazBank:
                 return new UkrGazBank();
+            case EBankType.Oschad:
+                return new OschadBank();
             default:
                 throw new Exception(ErrorStrings.ErrorUnsupportBank(bankType));
         }
