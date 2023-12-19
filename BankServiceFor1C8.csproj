@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
     <BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
-    <Version>6.1.4</Version>
+    <Version>6.1.5</Version>
     <UserSecretsId>a0ee92ff-d365-4c3f-ae66-44a9b12db8b1</UserSecretsId>
   </PropertyGroup>
   
