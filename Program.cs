@@ -9,7 +9,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Globalization;
 using Microsoft.JSInterop;
-using MudBlazor.Services;
 using Sabatex.RadzenBlazor;
 
 
@@ -22,7 +21,6 @@ namespace BankServiceFor1C8
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-            builder.Services.AddMudServices();
             builder.Services.AddSabatexRadzenBlazor();
             var host = builder.Build();
             await host.RunAsync();

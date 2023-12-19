@@ -7,65 +7,49 @@
 @using sabatex.Extensions.ClassExtensions
 @using System.ComponentModel.DataAnnotations
 @using System.Reflection
-
-
+@using Sabatex.RadzenBlazor
 
 @inject IJSRuntime JSRuntime
+<PageTitle>Обробка банківських виписок</PageTitle>
 
-
-<h2>Обробка банківських виписок</h2>
 <p>
     Дана програма призначена для перетворення виписок клієнтбанків (iFobs, iBank 2 UA, ПриватБанк, УКРГАЗБанк) України в формат придатний для завантаження програмами 1с8.х
 </p>
-<MudExpansionPanels>
-    <MudExpansionPanel Text="Протестовано для конфігурацій:">
-    <ul>
-         <li>Бухгалтерія Для України 2</li>
-         <li>Управління нашою фірмою 1.6</li>
-         <li>Управління торговим підприємством</li>
-         <li>BAS Бухгалтерія</li>
-         <li>BAS Corp</li>
-     </ul> 
 
-    </MudExpansionPanel>
-</MudExpansionPanels>
-
-<RadzenRadioButtonList @bind-Value="@bankType" TValue="EBankType" Orientation="Radzen.Orientation.Vertical">
+<RadzenRow class="mt-1">
+    <RadzenColumn >
+        <RadzenRadioButtonList @bind-Value="@bankType" TValue="EBankType" Orientation="Radzen.Orientation.Vertical" class="rz-border-radius-1 rz-border-primary-dark ">
     <Items>
         @{
             foreach (var eBank in stringBankPresents)
             {
-                <RadzenRadioButtonListItem Text="@eBank.Value" Value=@eBank.Key />
+                <RadzenRadioButtonListItem Text="@eBank.Value" Value=@eBank.Key class="ms-2 " />
             }
         }
 
     </Items>
 
 </RadzenRadioButtonList>
-
-
-
-<MudGrid>
-    @*    <MudItem xs="12" sm="8" md="6">
-         <MudRadioGroup @bind-Value="bankType" >
-            <MudStack>
-            @{
-                foreach (var eBank in stringBankPresents)
-                {
-                         <MudRadio Value=eBank.Key Color="Color.Primary" Dense="true" Size="Size.Small">@eBank.Value</MudRadio>
-                 }
-                }
-            </MudStack>
-        </MudRadioGroup>
-        <MudSelect T="EBankType" Label="Банківська клієнтська програма" Value="@bankType" ValueChanged="BankTypeChange">
-            @foreach (var eBank in stringBankPresents)
-            {
-                <MudSelectItem Value=eBank.Key T="EBankType">@eBank.Value</MudSelectItem>
-            }
-        </MudSelect>
-    </MudItem> *@
-    <MudItem xs="12" sm="6" md="4" Class="ma-auto">
-        <label for="uploadFiles" style="
+    </RadzenColumn>
+    <RadzenColumn class="d-flex">
+    <RadzenStack Orientation="Orientation.Vertical" JustifyContent="JustifyContent.SpaceBetween" Style="height:auto">
+            <RadzenPanel AllowCollapse="true" Collapsed="true">
+                <HeaderTemplate>
+                    <RadzenText TextStyle="TextStyle.H6" Class="rz-display-flex rz-align-items-center rz-m-0">Протестовано для конфігурацій:</RadzenText>
+                </HeaderTemplate>
+                <ChildContent>
+                    <RadzenCard>
+                        <ul>
+                            <li><RadzenText>Бухгалтерія Для України 2</RadzenText></li>
+                            <li><RadzenText>Управління нашою фірмою 1.6</RadzenText></li>
+                            <li><RadzenText>Управління торговим підприємством</RadzenText></li>
+                            <li><RadzenText>BAS Бухгалтерія</RadzenText></li>
+                            <li><RadzenText>BAS Corp</RadzenText></li>
+                        </ul>
+                    </RadzenCard>
+                </ChildContent>
+            </RadzenPanel>
+            <label for="uploadFiles" style="
         box-shadow: 0 2px 7px #4caf50;
         display: inline-flex;
         width: 200px;
@@ -76,36 +60,28 @@
         cursor: pointer;
         align-items: center;
         padding:16px;
-        background-color: #4caf50;">Виберіть файли<MudIcon Icon="@Icons.Filled.CloudUpload" /></label>
-        <InputFile id="uploadFiles" hidden multiple OnChange="HandleSelection" />
-    </MudItem>
-</MudGrid>
+        background-color: #4caf50;">Виберіть файли<RadzenIcon Icon="backup" /></label>
+            <InputFile id="uploadFiles" hidden multiple OnChange="HandleSelection" />
+
+
+    </RadzenStack>
+    </RadzenColumn>
+</RadzenRow>
 
 
 @if (makeFiles.Count() != 0)
- {
-    <MudText>Оброблено файли:</MudText>
-    <MudSimpleTable>
-        <thead>
-            <tr>
-                <th>Вхідний файл</th>
-                <th>Вихідний файл</th>
-                <th>Результат обробки</th>
-            </tr>
-        </thead> 
-        <tbody>
-            @foreach (var item in makeFiles)
-            {
-                <tr>
-                    <td>@item.InputFile</td>
-                    <td>@item.OutPutFile</td>
-                    <td>@item.Result</td>
-                </tr>
-            }
-        </tbody>
-    </MudSimpleTable>
+{
+    <RadzenText>Оброблено файли:</RadzenText>
+    <RadzenDataGrid TItem="ResultTask" Data="@makeFiles">
+        <Columns>
+            <RadzenDataGridColumn TItem="ResultTask" Property="InputFile" Title="Вхідний файл" />
+            <RadzenDataGridColumn TItem="ResultTask" Property="OutPutFile" Title="Вихідний файл" />
+            <RadzenDataGridColumn TItem="ResultTask" Property="Result" Title="Результат обробки" />
+        </Columns>   
+    </RadzenDataGrid>    
+ 
 
-    <MudAlert>Файли знаходяться в папці Завантаження</MudAlert>
+    <RadzenAlert>Файли знаходяться в папці Завантаження</RadzenAlert>
  }
 
 @code{
@@ -160,12 +136,12 @@
         }
     }
 
-    
-     void BankTypeChange(EBankType value)
-     {
+
+    void BankTypeChange(EBankType value)
+    {
         bankType = value;
-     }
+    }
 
-
+   
 
  }

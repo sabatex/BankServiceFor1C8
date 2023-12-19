@@ -1,35 +1,27 @@
 ﻿@using System.Reflection
 @inherits LayoutComponentBase
-
-@inject NavigationManager NavigationManager
-
-
-<MudThemeProvider Theme="_currentTheme"/> 
-<MudDialogProvider />
-<MudSnackbarProvider />
-
-
-<MudLayout>
-    <MudAppBar Elevation="25">
-        <MudHidden Breakpoint="Breakpoint.SmAndUp" Invert="true">
-            <MudText  Typo="Typo.h5" Class="mudblazor-appbar-brand-text">1C сервіс (@version)</MudText>
-        </MudHidden>
-        <MudSpacer /> 
-        <MudTooltip Text="Переключити тему світла/темна">
-            <MudIconButton Icon="@Icons.Material.Filled.Brightness4" Color="Color.Inherit" OnClick="@((e) => SwithTheme())" />
-        </MudTooltip>
-        <MudTooltip Text="Початковий код">
-            <MudIconButton Icon="@Icons.Custom.Brands.GitHub"  Color="Color.Inherit" Link="https://github.com/sabatex/BankServiceFor1C8"/>  
-        </MudTooltip>
-    </MudAppBar>  
-
-     <MudMainContent Class="content px-4">
+@inject TooltipService tooltipService
+<RadzenLayout>
+    <RadzenHeader>
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.End" JustifyContent="JustifyContent.SpaceBetween" class="rz-color-primary">
+            <RadzenText class="ms-2 text-white">Обробка банківських виписок (@version)</RadzenText>
+                <RadzenLink Image="icons/github-mark/github-mark-white.svg" Path="https://github.com/sabatex/BankServiceFor1C8" class="me-3 h2" MouseEnter="@(args => ShowTooltip(args) )"/>
+        </RadzenStack>
+    </RadzenHeader>
+    <RadzenBody>
         @Body
-     </MudMainContent>
-    
-</MudLayout>
-@code {
-    string version = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().
-    InformationalVersion;
+    </RadzenBody>
+</RadzenLayout>
+<RadzenTooltip/>
 
+@code {
+    string version = string.Empty;
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        var s = Assembly.GetExecutingAssembly().GetCustomAttribute<AssemblyInformationalVersionAttribute>().InformationalVersion;
+        int index = s.IndexOf('+');
+        version = index == -1?s:s.Substring(0, index);
+    }
+    void ShowTooltip(ElementReference elementReference, TooltipOptions options = null) => tooltipService.Open(elementReference, "Вихідний код програми!", options);
 }
