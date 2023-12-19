@@ -3,12 +3,15 @@
 @page "/bankservicefor1c8/clientbank1c8"
 @using System.IO
 @using BankServiceFor1C8.Models
-@using BankServiceFor1C8.BankHelper
+@using Sabatex.BankStatementHelper
 @using sabatex.Extensions.ClassExtensions
 @using System.ComponentModel.DataAnnotations
 @using System.Reflection
 
+
+
 @inject IJSRuntime JSRuntime
+
 
 <h2>Обробка банківських виписок</h2>
 <p>
@@ -27,25 +30,41 @@
     </MudExpansionPanel>
 </MudExpansionPanels>
 
+<RadzenRadioButtonList @bind-Value="@bankType" TValue="EBankType" Orientation="Radzen.Orientation.Vertical">
+    <Items>
+        @{
+            foreach (var eBank in stringBankPresents)
+            {
+                <RadzenRadioButtonListItem Text="@eBank.Value" Value=@eBank.Key />
+            }
+        }
+
+    </Items>
+
+</RadzenRadioButtonList>
+
+
+
 <MudGrid>
-    <MudItem xs="12" sm="8" md="6">
+    @*    <MudItem xs="12" sm="8" md="6">
+         <MudRadioGroup @bind-Value="bankType" >
+            <MudStack>
+            @{
+                foreach (var eBank in stringBankPresents)
+                {
+                         <MudRadio Value=eBank.Key Color="Color.Primary" Dense="true" Size="Size.Small">@eBank.Value</MudRadio>
+                 }
+                }
+            </MudStack>
+        </MudRadioGroup>
         <MudSelect T="EBankType" Label="Банківська клієнтська програма" Value="@bankType" ValueChanged="BankTypeChange">
             @foreach (var eBank in stringBankPresents)
             {
                 <MudSelectItem Value=eBank.Key T="EBankType">@eBank.Value</MudSelectItem>
             }
         </MudSelect>
-    </MudItem>
-    <MudItem xs="12" sm="8" md="6">
-        @switch (bankType)
-        {
-            case EBankType.iBankUA:
-            case EBankType.PrivatUA:
-                <MudTextField @bind-Value="accountNumber" Label="Розрахунковий рахунок:" Placeholder="Не обов'язково, допомагає відфільтрувати інші рахунки." />
-                break;
-        }
-    </MudItem>
-    <MudItem xs="12" sm="6" md="4">
+    </MudItem> *@
+    <MudItem xs="12" sm="6" md="4" Class="ma-auto">
         <label for="uploadFiles" style="
         box-shadow: 0 2px 7px #4caf50;
         display: inline-flex;
