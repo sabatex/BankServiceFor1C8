@@ -4,15 +4,15 @@
     <TargetFramework>net6.0</TargetFramework>
     <ServiceWorkerAssetsManifest>service-worker-assets.js</ServiceWorkerAssetsManifest>
     <BlazorWebAssemblyLoadAllGlobalizationData>true</BlazorWebAssemblyLoadAllGlobalizationData>
-    <Version>6.1.5</Version>
+    <Version>6.1.6</Version>
     <UserSecretsId>a0ee92ff-d365-4c3f-ae66-44a9b12db8b1</UserSecretsId>
   </PropertyGroup>
   
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.25" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.25" PrivateAssets="all" />
-    <PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.25" />
-    <PackageReference Include="Sabatex.BankStatementHelper" Version="2.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.35" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.35" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.Extensions.Localization" Version="6.0.35" />
+    <PackageReference Include="Sabatex.BankStatementHelper" Version="2.0.3" />
     <PackageReference Include="Sabatex.RadzenBlazor" Version="3.0.1" />
     <PackageReference Include="System.Net.Http.Json" Version="6.0.1" />  
   </ItemGroup>
